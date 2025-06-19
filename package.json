@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
+    "@studio-freight/react-lenis": "^0.0.47",
     "framer-motion": "^12.10.1",
     "gsap": "^3.13.0",
     "three": "^0.177.0"
