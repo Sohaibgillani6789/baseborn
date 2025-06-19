@@ -156,7 +156,7 @@ export default function Home() {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
         >
-            {/* Custom Cursor */}
+            {/* Custom Cursor - Keep as is, typically not responsive in this manner */}
             <div
                 className="fixed w-14 h-14 rounded-full border-2 border-white pointer-events-none z-50 transition-all duration-100 ease-out mix-blend-difference"
                 style={{
@@ -175,16 +175,19 @@ export default function Home() {
                 />
             </div>
 
-            {/* Main Content Container - Will slide up */}
+            {/* Main Content Container */}
             <motion.div
                 initial="hidden"
                 animate={pageLoaded ? "visible" : "hidden"}
-                variants={sectionContainerVariants} // Use container variants for the main content
-                className="flex flex-col lg:flex-row min-h-screen relative z-20 lg:pt-0 pt-4"
+                variants={sectionContainerVariants}
+                // Adjust flex direction and padding for mobile vs. desktop
+                // Mobile: column, Desktop: row. Mobile padding increased.
+                className="flex flex-col lg:flex-row min-h-screen relative z-20 pt-16 md:pt-20 lg:pt-0"
             >
                 {/* Text banner instead of image - desktop (left panel) */}
+                {/* Hide on smaller screens, show on lg and up */}
                 <motion.div
-                    variants={sectionTextItemVariant} // Use text variant
+                    variants={sectionTextItemVariant}
                     className="fixed top-0 left-0 w-1/2 h-[45vh] z-10 hidden lg:flex items-center justify-center"
                 >
                     <motion.h1
@@ -195,31 +198,35 @@ export default function Home() {
                 </motion.div>
 
                 {/* Text banner instead of image - mobile */}
+                {/* Show on smaller screens, hide on lg and up */}
                 <motion.div
-                    variants={sectionTextItemVariant} // Use text variant
-                    className="relative w-full h-[55vh] lg:hidden z-10 flex items-center justify-center"
+                    variants={sectionTextItemVariant}
+                    className="relative w-full h-[30vh] sm:h-[40vh] md:h-[45vh] lg:hidden z-10 flex items-center justify-center"
                 >
                     <motion.h1
-                        className="baseborn-heading text-6xl md:text-8xl text-white uppercase"
+                        // Adjust text size for different mobile breakpoints
+                        className="baseborn-heading text-4xl xs:text-5xl sm:text-6xl md:text-7xl text-white uppercase"
                     >
                         BOUNDLESS
                     </motion.h1>
                 </motion.div>
 
-                {/* Left Panel - Fixed */}
-                <div className="lg:w-1/2 lg:fixed lg:h-screen lg:top-[45vh]">
-                    <section className="p-2 lg:p-16 flex flex-col items-center justify-center">
-                        <div className="max-w-2xl">
+                {/* Left Panel - Fixed for desktop, relative for mobile */}
+                <div className="lg:w-1/2 lg:fixed lg:h-screen lg:top-[45vh] w-full mt-4 md:mt-8 lg:mt-0">
+                    <section className="p-4 sm:p-6 md:p-8 lg:p-16 flex flex-col items-center justify-center text-center lg:text-left">
+                        <div className="max-w-full lg:max-w-2xl">
                             <motion.h1
-                                variants={sectionTextItemVariant} // Use text variant
-                                className="font-light text-5xl md:text-2xl tracking-tighter -mt-[50px]"
+                                variants={sectionTextItemVariant}
+                                // Adjust font size and margin for mobile
+                                className="font-light text-xl sm:text-2xl md:text-3xl lg:text-2xl tracking-tighter -mt-10 sm:-mt-12 md:-mt-16 lg:-mt-[50px] mb-4 lg:mb-0"
                             >
                                 /boundless/_adjective_having no limits
                             </motion.h1>
 
                             <motion.h2
-                                variants={sectionTextItemVariant} // Use text variant
-                                className="baseborn-title text-2xl md:text-4xl lg:text-5xl leading-tight mb-2"
+                                variants={sectionTextItemVariant}
+                                // Adjust font size and line height for mobile
+                                className="baseborn-title text-xl sm:text-2xl md:text-3xl lg:text-5xl leading-tight mb-6 sm:mb-8 lg:mb-2"
                             >
                                 An Independent Branding & Digital Design Studio
                                 based in lahore. We combine Identity,
@@ -228,12 +235,12 @@ export default function Home() {
                             </motion.h2>
 
                             <motion.div
-                                variants={sectionTextItemVariant} // Use text variant
-                                className="mb-12"
+                                variants={sectionTextItemVariant}
+                                className="mb-8 sm:mb-10 lg:mb-12"
                             >
                                 <Link
                                     href="/work"
-                                    className="mb-25 inline-block py-3 px-6 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300 text-white"
+                                    className="inline-block py-3 px-6 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300 text-white text-base sm:text-lg"
                                 >
                                     View Work
                                 </Link>
@@ -247,15 +254,15 @@ export default function Home() {
                     <motion.div
                         initial="hidden"
                         animate={pageLoaded ? "visible" : "hidden"}
-                        variants={sectionContainerVariants} // Container variant for the grid items
-                        className="grid grid-cols-1 gap-8 p-8"
+                        variants={sectionContainerVariants}
+                        // Adjust padding for mobile
+                        className="grid grid-cols-1 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8"
                     >
                         {projects.map((project) => (
-                            <motion.div key={project.id} variants={sectionMediaItemVariant}> {/* Apply media reveal variant */}
+                            <motion.div key={project.id} variants={sectionMediaItemVariant}>
                                 <Link
                                     href={project.link}
-                                    className="hover-project block aspect-[16/12] relative rounded-lg"
-                                    // Removed overflow-hidden from here, as clip-path will handle it
+                                    className="hover-project block aspect-[16/12] relative rounded-lg overflow-hidden" // Added overflow-hidden for border-radius to work with clip-path
                                 >
                                     <div className="absolute inset-0 bg-black/20 z-10" />
                                     {project.videoUrl ? (
@@ -278,11 +285,11 @@ export default function Home() {
                                         />
                                     )}
 
-                                    <div className="absolute bottom-6 left-6 z-20 text-white">
-                                        <h3 className="text-xl md:text-2xl font-bold baseborn-heading">
+                                    <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-20 text-white">
+                                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold baseborn-heading">
                                             {project.title}
                                         </h3>
-                                        <p className="text-sm md:text-base opacity-80">
+                                        <p className="text-xs sm:text-sm md:text-base opacity-80">
                                             {project.subtitle}
                                         </p>
                                     </div>
@@ -294,30 +301,22 @@ export default function Home() {
             </motion.div>
 
             {/* Footer - Fixed to bottom with show/hide animation */}
-            <footer className={`fixed bottom-0 left-0 w-full bg-white z-30 py-6 transition-transform duration-300 ${showFooter ? 'translate-y-0' : 'translate-y-full'}`}>
+            <footer className={`fixed bottom-0 left-0 w-full bg-white z-30 py-4 sm:py-6 transition-transform duration-300 ${showFooter ? 'translate-y-0' : 'translate-y-full'}`}>
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                        <Image
-                            src="/images/pattern.svg"
-                            alt="Pattern"
-                            width={800}
-                            height={400}
-                            className="w-auto h-[120px] opacity-10"
-                        />
-                    </div>
+                 
                 </div>
-                <div className="container mx-auto px-8 flex flex-col md:flex-row justify-between items-center relative z-10">
-                    <div className="baseborn-heading text-black text-sm md:text-base mb-4 md:mb-0">
+                <div className="container mx-auto px-4 sm:px-8 flex flex-col md:flex-row justify-between items-center relative z-10">
+                    <div className="baseborn-heading text-black text-xs sm:text-sm md:text-base mb-2 md:mb-0 text-center md:text-left">
                         © 2025 BOUNDLESS. All rights reserved.
                     </div>
-                    <div className="flex space-x-8">
-                        <Link href="/contact" className="baseborn-heading text-black text-sm md:text-base hover:text-gray-600 transition-colors">
+                    <div className="flex space-x-4 sm:space-x-6 md:space-x-8">
+                        <Link href="/contact" className="baseborn-heading text-black text-xs sm:text-sm md:text-base hover:text-gray-600 transition-colors">
                             Contact
                         </Link>
-                        <Link href="/about" className="baseborn-heading text-black text-sm md:text-base hover:text-gray-600 transition-colors">
+                        <Link href="/about" className="baseborn-heading text-black text-xs sm:text-sm md:text-base hover:text-gray-600 transition-colors">
                             About
                         </Link>
-                        <Link href="/careers" className="baseborn-heading text-black text-sm md:text-base hover:text-gray-600 transition-colors">
+                        <Link href="/careers" className="baseborn-heading text-black text-xs sm:text-sm md:text-base hover:text-gray-600 transition-colors">
                             Careers
                         </Link>
                     </div>

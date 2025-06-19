@@ -63,9 +63,9 @@ const services = [
 ];
 
 export default function StudioPage() {
-  // Use the smooth scroll hook
+  // Use the smooth scroll hook - Consider temporarily disabling this to diagnose scroll issues
   useSmoothScroll();
-  
+
   const paragraphs = [
     "We're an independent digital-first design studio...",
     'We believe that for a brand to break through...',
@@ -75,25 +75,25 @@ export default function StudioPage() {
 
   // Create refs
   const containerRef = useRef(null);
-  const contentRef = useRef(null);
-  
+  const contentRef = useRef(null); // Ref for the main scrolling content
+
   // Set up scroll animation
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
-  
+
   // Transform with clamping to prevent white line
-  const yProgress = useTransform(scrollYProgress, [0, 0.7], [0, -100]);
+  const yProgress = useTransform(scrollYProgress, [0, 0.7], [0, -100]); // Adjust 0.7 and -100 as needed
   const y = useMotionValue(0);
-  
+
   useEffect(() => {
     const unsubscribe = yProgress.on("change", (latest) => {
-      // Ensure the value never goes positive (which would show white line)
+      // Ensure the value never goes positive (which would show white line at top)
       const clampedValue = Math.min(0, latest);
       y.set(clampedValue);
     });
-    
+
     return () => unsubscribe();
   }, [yProgress, y]);
 
@@ -101,9 +101,14 @@ export default function StudioPage() {
     <div className="relative bg-neutral-900">
       <CustomCursor />
 
-      {/* Main container with scroll height */}
+      {/*
+        Main container for the scroll effect.
+        It needs to be tall enough to allow the content to scroll up and reveal the fixed footer.
+        Consider setting a specific height (e.g., h-[200vh]) or calculating it dynamically.
+      */}
       <div ref={containerRef} className="relative">
         {/* White Footer (fixed position) */}
+        {/* This element remains fixed in the viewport while the parent scrolls */}
         <div className="fixed inset-0 w-full h-screen bg-white text-black z-0">
           {/* Pattern overlay */}
           <div className="absolute w-full h-full flex items-center justify-center">
@@ -125,7 +130,7 @@ export default function StudioPage() {
             <p className="mb-1">hello@baseborn.design</p>
             <p>+1 (123) 456-7890</p>
           </div>
-          
+
           {/* BOUNDLESS text */}
           <div className="absolute bottom-8 left-0 right-0 flex justify-center px-4">
             <h2 className="baseborn-title text-[3rem] sm:text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[14rem] 2xl:text-[19rem] text-neutral-900 leading-none text-center break-words relative z-10">
@@ -135,19 +140,31 @@ export default function StudioPage() {
         </div>
 
         {/* Main Content Section */}
-        <motion.div 
+        {/*
+          This motion.div contains all your scrollable content.
+          For a "reveal" effect where a fixed element comes into view,
+          it's often more reliable to use `position: sticky` on the scrolling content
+          if the `containerRef` wraps both.
+          Alternatively, if using `position: relative` as you are, the `containerRef`
+          needs enough height for the content to scroll entirely out of view,
+          revealing the fixed element beneath.
+        */}
+        <motion.div
           ref={contentRef}
-          style={{ 
+          style={{
             y: y,
-            position: 'relative',
+            position: 'relative', // Keep relative if you want to use the spacer div to control overall scroll
+            // CONSIDER CHANGING TO 'sticky' with `top: 0` if `containerRef` wraps both elements and you want the content to stick and then animate.
+            // position: 'sticky',
+            // top: 0,
             zIndex: 10,
             backgroundColor: '#171717',
-            minHeight: '100vh',
+            minHeight: '100vh', // Ensure content takes at least one viewport height
           }}
           className="text-white"
         >
-          {/* Extra safety div to prevent white line */}
-          <div style={{ 
+          {/* Extra safety div to prevent white line when scrolling up */}
+          <div style={{
             position: 'absolute',
             top: '-5px',
             left: 0,
@@ -156,7 +173,7 @@ export default function StudioPage() {
             backgroundColor: '#171717',
             zIndex: 20
           }} />
-          
+
           <div className="py-20" style={{ backgroundColor: '#171717' }}>
             <motion.div
               initial="hidden"
@@ -262,21 +279,21 @@ export default function StudioPage() {
                 >
                   Our Work Philosophy
                 </motion.h2>
-                
+
                 <motion.div variants={fadeIn} className="mb-10">
                   <h3 className="baseborn-heading text-xl mb-4">Passion & Dedication</h3>
                   <p className="text-lg text-secondary mb-4">
                     At BOUND LESS, we don't just create designs - we live and breathe our craft. Every pixel, every interaction, and every color choice is purposeful and deliberate. Our team works tirelessly, often into the late hours, refining concepts until they reach perfection.
                   </p>
                 </motion.div>
-                
+
                 <motion.div variants={fadeIn} className="mb-10">
                   <h3 className="baseborn-heading text-xl mb-4">Beyond Expectations</h3>
                   <p className="text-lg text-secondary mb-4">
                     We believe in exceeding client expectations, not just meeting them. This means countless iterations, thorough research, and pushing creative boundaries. We're never satisfied with "good enough" - we strive for excellence in everything we deliver.
                   </p>
                 </motion.div>
-                
+
                 <motion.div variants={fadeIn}>
                   <h3 className="baseborn-heading text-xl mb-4">Collaborative Intensity</h3>
                   <p className="text-lg text-secondary">
@@ -294,8 +311,14 @@ export default function StudioPage() {
             </div>
           </div>
         </motion.div>
-        
-        {/* Spacer div to create scroll distance */}
+
+        {/*
+          Spacer div to create scroll distance.
+          This div creates the extra height within `containerRef` that allows
+          the `motion.div` to scroll up and reveal the fixed footer.
+          The height of this spacer should ideally be equal to the height of the fixed footer
+          or the desired amount of scroll needed to fully reveal it.
+        */}
         <div className="h-screen" style={{ backgroundColor: 'transparent' }} />
       </div>
     </div>
