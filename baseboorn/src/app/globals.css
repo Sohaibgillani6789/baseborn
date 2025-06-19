@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'TWKLausanne';
+  src: url('/fonts/TWKLausanne-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BasebornSans';
+  src: url('/fonts/BasebornSans.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UniversalSansDisplay';
+  src: url('/fonts/UniversalSansDisplay.woff2') format('woff2');
+  font-weight: 876;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --background: #111111;
+  --foreground: #e5e5e5;
+  --primary: #ffffff;
+  --secondary: #7c7c7c;
+  --accent: #444444;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'TWKLausanne', sans-serif;
+}
+
+.baseborn-title {
+  font-family: 'UniversalSansDisplay', sans-serif;
+  font-weight: 876;
+}
+
+.baseborn-heading {
+  font-family: 'BasebornSans', sans-serif;
+}
+
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply relative px-2 py-1 transition-colors duration-300 text-[#cdcdcd] hover:text-white;
+  }
+
+  .footer-link {
+    @apply text-sm text-[#7c7c7c] hover:text-white transition-colors duration-300;
+  }
+
+  .section-heading {
+    @apply text-2xl md:text-3xl font-bold mb-6 baseborn-heading;
+  }
+
+  .content-wrapper {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  .content-wrapper.loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.circular-text {
+  animation: spin-slow 30s linear infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hover-project {
+  transition: all 0.5s ease;
+}
+
+.hover-project:hover {
+  transform: scale(0.98);
+}
+
+.say-animation span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.huge-baseborn {
+  font-size: clamp(3rem, 20vw, 14rem);
+  line-height: 0.9;
+}
+
+/* Custom cursor styles */
+.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  width: 62px;
+  height: 62px;
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease;
+}
+
+.custom-cursor.hover {
+  transform: scale(1.2);
+  background-color: #fff;
+  mix-blend-mode: difference;
+}
+
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none;
+  }
+  .has-custom-cursor * {
+    cursor: auto !important;
+  }
+}
+
+/* Add these styles at the end of the file */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Prevent content flash during loading */
+body.loading {
+  overflow: hidden;
+}
