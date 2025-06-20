@@ -27,7 +27,7 @@
 }
 
 :root {
-  --background: #111111;
+  --background: #111111; /* This variable might become less critical if body is directly styled */
   --foreground: #e5e5e5;
   --primary: #ffffff;
   --secondary: #7c7c7c;
@@ -35,13 +35,23 @@
 }
 
 html {
+  overflow-x: hidden; /* Changed from hidden to overflow-x: hidden to allow vertical scroll */
+  margin: 0;
+  padding: 0;
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  /* THIS IS THE KEY CHANGE: Set the background color directly here */
+  background-color: theme('colors.neutral.900'); /* Using theme() for direct Tailwind color */
+  color: var(--foreground); /* Keep text color as default, or change to white/light gray */
   font-family: 'TWKLausanne', sans-serif;
+  min-height: 100vh; /* Ensure body takes full height to allow page content to fill it */
+  position: relative; /* Useful for positioning elements relative to body */
+}
+
+body::-webkit-scrollbar {
+  display: none;                 /* Chrome, Safari, Edge */
 }
 
 .baseborn-title {
@@ -52,8 +62,6 @@ body {
 .baseborn-heading {
   font-family: 'BasebornSans', sans-serif;
 }
-
-
 
 @keyframes spin {
   from {
@@ -137,7 +145,7 @@ body {
 .custom-cursor {
   width: 62px;
   height: 62px;
-  border: 1.5px solid #fff;
+  border: 1.5px solid #b40707;
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
@@ -148,7 +156,7 @@ body {
 
 .custom-cursor.hover {
   transform: scale(1.2);
-  background-color: #fff;
+  background-color: #ffffff;
   mix-blend-mode: difference;
 }
 

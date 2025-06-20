@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+
 const projects = [
   {
     id: 'birdie',
@@ -64,6 +65,9 @@ export default function WorkPage() {
           <h1 className="baseborn-title text-4xl md:text-5xl lg:text-6xl mb-4">Work</h1>
           <p className="text-secondary">Current Work ({projects.length})</p>
         </div>
+
+
+        
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {projects.map((project) => (

@@ -3,6 +3,16 @@ import { useEffect } from 'react';
 
 export default function useSmoothScroll() {
   useEffect(() => {
+    // Disable native smooth scroll
+    const prevScrollBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+
+    // Prevent browser from restoring scroll position automatically
+    const prevScrollRestoration = window.history.scrollRestoration;
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     let targetScrollY = window.scrollY;
     let currentScrollY = targetScrollY;
     let rafId = null;
@@ -71,7 +81,11 @@ export default function useSmoothScroll() {
       cancelAnimationFrame(rafId);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
-      document.documentElement.style.scrollBehavior = 'auto';
+      // Restore scroll behavior and scroll restoration
+      document.documentElement.style.scrollBehavior = prevScrollBehavior;
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = prevScrollRestoration;
+      }
     };
   }, []);
 }
