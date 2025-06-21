@@ -3,6 +3,16 @@ import { useEffect } from 'react';
 
 export default function useSmoothScroll() {
   useEffect(() => {
+    // Detect if the device is mobile (touch device)
+    const isMobile = typeof window !== 'undefined' && (
+      'ontouchstart' in window || navigator.maxTouchPoints > 0
+    );
+
+    if (isMobile) {
+      // On mobile, do nothing (use native scroll)
+      return;
+    }
+
     // Disable native smooth scroll
     const prevScrollBehavior = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = 'auto';

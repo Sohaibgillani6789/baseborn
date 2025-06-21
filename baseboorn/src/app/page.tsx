@@ -128,7 +128,6 @@ export default function Home() {
       const currentScrollY = window.scrollY;
       const scrollHeight = document.documentElement.scrollHeight;
       const clientHeight = document.documentElement.clientHeight;
-
       const isAtBottom = currentScrollY + clientHeight >= scrollHeight - 20;
       setShowFooter(isAtBottom);
 

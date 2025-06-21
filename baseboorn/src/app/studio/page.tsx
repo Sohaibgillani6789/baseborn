@@ -70,7 +70,7 @@ export default function StudioPage() {
 
   const paragraphs = [
     "We're an independent digital-first design studio, combining branding, motion design & digital design to help amazing clients stand out from the crowd in a digital first world.",
-    'We believe that for a brand to break through the barrier of today’s digital world, it needs to be a memorable experience across all platforms.',
+    "We believe that for a brand to break through the barrier of today's digital world, it needs to be a memorable experience across all platforms.",
     'Our philosophy is that working closely with our clients, understanding their vision, and immersing ourselves in their brand story allows us to create truly impactful designs.',
     'With more than 20+ years of experience combined, we bring a wealth of knowledge and expertise to every project, ensuring top-notch quality and innovation.',
   ];
@@ -196,7 +196,7 @@ export default function StudioPage() {
               {teamMembers.map((member) => (
                 // Each team member div will animate individually using fadeIn
                 <motion.div key={member.name} variants={fadeIn} className="relative text-center">
-                  <div className="aspect-square overflow-hidden mb-4">
+                  <div className="aspect-square overflow-hidden mb-2 h-45 sm:h-56 md:h-auto">
                     <Image
                       src={member.imageUrl}
                       alt={member.name}
